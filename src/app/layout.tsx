@@ -31,6 +31,11 @@ export default function RootLayout({
   return (
     <html lang="ja" className={`${geist.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-gray-50 font-sans">
+        {/* アンバーバナー */}
+        <div className="bg-amber-400 text-amber-900 text-center text-sm font-medium py-2 px-4">
+          これはデモ版です。データはサーバー再起動時にリセットされる場合があります。
+        </div>
+
         <SpeechWarningBanner />
 
         <header className="bg-indigo-600 text-white shadow-md">
@@ -58,6 +63,14 @@ export default function RootLayout({
                 <FontAwesomeIcon icon={faHistory} className="w-4 h-4" />
                 {strings.nav.history}
               </Link>
+              <span className="border-l border-indigo-400 pl-4">
+                <a
+                  href="https://rictaworks.jp/#demos"
+                  className="text-base font-semibold hover:text-indigo-100 transition-colors duration-150"
+                >
+                  ← デモ一覧へ
+                </a>
+              </span>
             </nav>
           </div>
         </header>
@@ -67,6 +80,17 @@ export default function RootLayout({
         <footer className="bg-indigo-50 border-t border-indigo-100 text-center text-sm text-gray-500 py-4 px-4 mt-auto">
           {strings.appTitle}
         </footer>
+
+        {/* 右下固定ご相談ボタン */}
+        <a
+          href="https://rictaworks.jp/"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ position: "fixed", bottom: "1.5rem", right: "1.5rem" }}
+          className="bg-indigo-600 text-white text-sm font-semibold px-4 py-3 rounded-full shadow-lg hover:bg-indigo-700 transition-colors duration-150"
+        >
+          💬 ご相談はこちら
+        </a>
       </body>
     </html>
   )
