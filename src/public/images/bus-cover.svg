@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+  <rect width="300" height="400" fill="#DBEAFE"/>
+  <rect x="10" y="10" width="280" height="380" rx="16" fill="#EFF6FF" stroke="#3B82F6" stroke-width="4"/>
+  <!-- sky background -->
+  <rect x="10" y="10" width="280" height="230" rx="16" fill="#BFDBFE"/>
+  <!-- clouds -->
+  <ellipse cx="80" cy="70" rx="35" ry="20" fill="white"/>
+  <ellipse cx="100" cy="58" rx="25" ry="18" fill="white"/>
+  <ellipse cx="220" cy="90" rx="30" ry="18" fill="white"/>
+  <ellipse cx="238" cy="78" rx="22" ry="15" fill="white"/>
+  <!-- road -->
+  <rect x="10" y="230" width="280" height="160" rx="8" fill="#9CA3AF"/>
+  <!-- road markings -->
+  <rect x="60" y="265" width="40" height="8" rx="4" fill="white"/>
+  <rect x="130" y="265" width="40" height="8" rx="4" fill="white"/>
+  <rect x="200" y="265" width="40" height="8" rx="4" fill="white"/>
+  <!-- bus body -->
+  <rect x="30" y="160" width="240" height="110" rx="14" fill="#FBBF24"/>
+  <!-- bus roof -->
+  <rect x="40" y="148" width="220" height="25" rx="10" fill="#F59E0B"/>
+  <!-- windows -->
+  <rect x="50" y="172" width="50" height="40" rx="8" fill="#BAE6FD"/>
+  <rect x="120" y="172" width="50" height="40" rx="8" fill="#BAE6FD"/>
+  <rect x="190" y="172" width="50" height="40" rx="8" fill="#BAE6FD"/>
+  <!-- door -->
+  <rect x="48" y="220" width="35" height="50" rx="6" fill="#92400E"/>
+  <!-- wheels -->
+  <circle cx="90" cy="282" r="26" fill="#1F2937"/>
+  <circle cx="90" cy="282" r="14" fill="#6B7280"/>
+  <circle cx="90" cy="282" r="6" fill="#9CA3AF"/>
+  <circle cx="210" cy="282" r="26" fill="#1F2937"/>
+  <circle cx="210" cy="282" r="14" fill="#6B7280"/>
+  <circle cx="210" cy="282" r="6" fill="#9CA3AF"/>
+  <!-- headlights -->
+  <ellipse cx="265" cy="220" rx="10" ry="8" fill="#FDE68A"/>
+  <!-- title text -->
+  <text x="150" y="340" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="bold" fill="#1E3A8A">ぶんぶんバス</text>
+</svg>
