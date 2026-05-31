@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
 import SpeechPlayer from "./SpeechPlayer"
 import PageNavigator from "./PageNavigator"
 import { Page } from "@/lib/types"
@@ -9,29 +9,9 @@ type Props = {
   page: Page
   bookId: number
   totalPages: number
-  initialSessionId: string | null
 }
 
-async function resolveSessionId(initialSessionId: string | null): Promise<string> {
-  if (initialSessionId) {
-    return initialSessionId
-  }
-  const res = await fetch("/api/session")
-  if (!res.ok) {
-    throw new Error(`session fetch failed: ${res.status}`)
-  }
-  const data = (await res.json()) as { sessionId: string }
-  return data.sessionId
-}
-
-export default function ReadPageClient({
-  page,
-  bookId,
-  totalPages,
-  initialSessionId,
-}: Props) {
-  const sessionIdRef = useRef<string | null>(initialSessionId)
-
+export default function ReadPageClient({ page, bookId, totalPages }: Props) {
   useEffect(() => {
     if (typeof window === "undefined") {
       return
@@ -42,13 +22,10 @@ export default function ReadPageClient({
 
     const saveProgress = async () => {
       try {
-        const sessionId = await resolveSessionId(sessionIdRef.current)
-        sessionIdRef.current = sessionId
         await fetch("/api/progress", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            sessionId,
             bookId,
             lastPage: page.pageNumber,
             hp_email: "",
@@ -61,13 +38,10 @@ export default function ReadPageClient({
 
     const saveHistory = async () => {
       try {
-        const sessionId = await resolveSessionId(sessionIdRef.current)
-        sessionIdRef.current = sessionId
         await fetch("/api/history", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            sessionId,
             bookId,
             hp_email: "",
           }),

@@ -1,58 +1,84 @@
-import { NextRequest } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
+import { cookies } from "next/headers"
 import { ensureDb } from "@/lib/db/init"
 import { get, save } from "@/lib/services/progress.service"
+import { getOrCreate } from "@/lib/services/session.service"
 import { validate } from "@/lib/validators/honeypot"
+import { COOKIE_SESSION_ID, COOKIE_MAX_AGE } from "@/lib/config/strings"
 
-export async function GET(request: NextRequest): Promise<Response> {
+async function getSessionFromCookie(): Promise<{ sessionId: string; isNew: boolean }> {
+  const cookieStore = await cookies()
+  const existing = cookieStore.get(COOKIE_SESSION_ID)?.value
+  const sessionId = getOrCreate(existing)
+  return { sessionId, isNew: sessionId !== existing }
+}
+
+export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
     ensureDb()
-    const { searchParams } = request.nextUrl
-    const sessionId = searchParams.get("sessionId")
-    const bookIdStr = searchParams.get("bookId")
+    const { sessionId, isNew } = await getSessionFromCookie()
 
-    if (!sessionId || !bookIdStr) {
-      return Response.json(
-        { error: "sessionId and bookId are required" },
-        { status: 400 }
-      )
+    const bookIdStr = request.nextUrl.searchParams.get("bookId")
+    if (!bookIdStr) {
+      return NextResponse.json({ error: "bookId is required" }, { status: 400 })
     }
 
     const bookId = parseInt(bookIdStr, 10)
     if (isNaN(bookId)) {
-      return Response.json({ error: "Invalid bookId" }, { status: 400 })
+      return NextResponse.json({ error: "Invalid bookId" }, { status: 400 })
     }
 
     const lastPage = get(sessionId, bookId)
-    return Response.json({ lastPage })
+    const res = NextResponse.json({ lastPage })
+
+    if (isNew) {
+      res.cookies.set(COOKIE_SESSION_ID, sessionId, {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        maxAge: COOKIE_MAX_AGE,
+      })
+    }
+
+    return res
   } catch (err) {
     console.error("[GET /api/progress]", err)
-    return Response.json({ error: "Internal server error" }, { status: 500 })
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
 
-export async function POST(request: NextRequest): Promise<Response> {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     ensureDb()
+    const { sessionId, isNew } = await getSessionFromCookie()
+
     const body: Record<string, unknown> = await request.json()
 
     if (!validate(body)) {
-      return Response.json({ error: "Bad request" }, { status: 400 })
+      return NextResponse.json({ error: "Bad request" }, { status: 400 })
     }
 
-    const { sessionId, bookId, lastPage } = body
+    const { bookId, lastPage } = body
 
-    if (
-      typeof sessionId !== "string" ||
-      typeof bookId !== "number" ||
-      typeof lastPage !== "number"
-    ) {
-      return Response.json({ error: "Invalid request body" }, { status: 400 })
+    if (typeof bookId !== "number" || typeof lastPage !== "number") {
+      return NextResponse.json({ error: "Invalid request body" }, { status: 400 })
     }
 
     save(sessionId, bookId, lastPage)
-    return Response.json({ ok: true })
+    const res = NextResponse.json({ ok: true })
+
+    if (isNew) {
+      res.cookies.set(COOKIE_SESSION_ID, sessionId, {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        maxAge: COOKIE_MAX_AGE,
+      })
+    }
+
+    return res
   } catch (err) {
     console.error("[POST /api/progress]", err)
-    return Response.json({ error: "Internal server error" }, { status: 500 })
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }

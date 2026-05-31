@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"
 import { ensureDb } from "@/lib/db/init"
 import { getBookById, getPage } from "@/lib/services/book.service"
-import { readSessionId } from "@/lib/session-cookie"
 import ReadPageClient from "@/app/components/ReadPageClient"
 import { getStrings } from "@/lib/config/strings"
 
@@ -47,8 +46,6 @@ export default async function ReadPage({ params, searchParams }: Props) {
     notFound()
   }
 
-  const sessionId = await readSessionId()
-
   return (
     <main className="flex-1 max-w-2xl mx-auto w-full px-4 py-8">
       <div className="flex items-center justify-between mb-6">
@@ -69,7 +66,6 @@ export default async function ReadPage({ params, searchParams }: Props) {
         page={page}
         bookId={bookId}
         totalPages={book.totalPages}
-        initialSessionId={sessionId}
       />
     </main>
   )
