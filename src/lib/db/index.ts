@@ -5,9 +5,7 @@ if (typeof window !== "undefined") {
   throw new Error("lib/db must only be imported on the server side")
 }
 
-const DB_PATH = path.resolve(
-  "/workspaces/ehon-yomikikase-demo/data/ehon.db"
-)
+const DB_PATH = process.env.DB_PATH ?? path.join("/tmp", "ehon.db")
 
 let instance: Database.Database | null = null
 
