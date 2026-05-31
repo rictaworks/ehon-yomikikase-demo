@@ -11,3 +11,6 @@ CLIENT/
 WORK/
 DELETE/
 SPEC/ehon-yomikikase-demo-spec.md
+
+# SQLite database
+data/
