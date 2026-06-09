@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Script from "next/script"
 import { Geist } from "next/font/google"
 import "./globals.css"
 import Link from "next/link"
@@ -30,6 +31,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" className={`${geist.variable} h-full antialiased`}>
+      <head>
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-C04W1XKS16" strategy="afterInteractive" />
+        <Script id="ga-init" strategy="afterInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-C04W1XKS16');
+        `}</Script>
+      </head>
       <body className="min-h-full flex flex-col bg-gray-50 font-sans">
         {/* アンバーバナー */}
         <div className="bg-amber-400 text-amber-900 text-center text-sm font-medium py-2 px-4">
