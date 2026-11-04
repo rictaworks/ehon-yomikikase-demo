@@ -1,0 +1,21 @@
+export const MESSAGES = {
+  invalidBookId: "Invalid book id",
+  invalidPageNumber: "Invalid page number",
+  invalidCategoryId: "Invalid categoryId",
+  invalidAgeMin: "Invalid ageMin",
+  invalidAgeMax: "Invalid ageMax",
+  invalidBookIdParam: "Invalid bookId",
+  bookIdRequired: "bookId is required",
+  invalidRequestBody: "Invalid request body",
+  badRequest: "Bad request",
+  payloadTooLarge: "Payload too large",
+  unsupportedMediaType: "Content-Type must be application/json",
+  bookNotFound: "Book not found",
+  pageNotFound: "Page not found",
+  notFound: "Not found",
+  tooManySessions: "Too many sessions. Try again after the daily reset",
+  tooManyHistoryEntries: "Too many history entries for this session",
+  adminKeyNotConfigured: "Admin key not configured",
+  unauthorized: "Unauthorized",
+  internalError: "Internal server error"
+} as const;

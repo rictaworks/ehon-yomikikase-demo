@@ -14,3 +14,13 @@ SPEC/ehon-yomikikase-demo-spec.md
 
 # SQLite database
 data/
+
+# Workers / Next.js（web/）のビルド成果物・ローカル状態
+node_modules/
+.wrangler/
+.dev.vars
+web/.next/
+web/out/
+web/next-env.d.ts
+*.tsbuildinfo
+!.env.example
