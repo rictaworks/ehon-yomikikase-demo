@@ -72,3 +72,21 @@ NODE_ENV=development / RAILS_ENV=development
 - 仕様書: [SPEC/](SPEC/)
 - タスク: [TASKS/](TASKS/)
 - バグ報告: [DEBUG/](DEBUG/)
+
+---
+
+## Cloudflare 版（Workers + D1）の構成と運用
+
+- 構成: `worker/`（Hono の API。`/api/*` のみ Worker が処理）、`web/`（Next.js の静的書き出し。`web/out` を Workers Assets で配信）、`migrations/`（D1 のスキーマと絵本マスタ）。旧 `src/`（Next.js API Routes・SQLite）は移行後も残しており、本番では使わない。
+- ローカル確認: `npm install` → `npm run db:migrate:local` → `cd web && npm install && npm run build && cd ..` → `npm run dev`（wrangler dev、既定 http://localhost:8787）。`npm test` で Worker の単体・結合テスト。
+- 日次リセット: JST 03:00（cron `0 18 * * *`）。利用者データだけを削除し、絵本マスタは残す。手動実行は `POST /api/admin/reset`（`Authorization: Bearer <ADMIN_INTERNAL_KEY>`）。
+- 秘密の名前は `ADMIN_INTERNAL_KEY` の 1 つだけ（`wrangler secret put ADMIN_INTERNAL_KEY`）。値はリポジトリに書かない。
+
+### 運用・セキュリティ方針
+
+- 匿名の書き込みと `GET /api/session` の濫用対策は件数上限で行う。Cloudflare の Rate Limiting は本番で未設定のため、公開前に併用を検討する。
+  - 利用者セッションは同時 5000 件まで（`MAX_SESSIONS`）。超えると新規発行だけを 429 で止める。Cookie を持つ既存の利用者は影響を受けず、日次リセットで戻る。
+  - 1 セッションの閲覧履歴は 500 件まで（`MAX_HISTORY_PER_SESSION`）。超えると 429。
+- JSON 本文は解析の前に確かめる。`Content-Type` が `application/json` でなければ 415、1 KiB を超えれば 413。
+- 防御ヘッダ: API 応答は hono の `secureHeaders`（CSP `default-src 'none'`、`nosniff`、`Referrer-Policy: no-referrer`）。静的ページは `web/public/_headers`（CSP、`X-Frame-Options: DENY`、HSTS など）。CSP の `'unsafe-inline'` は、Next.js の静的書き出しが埋め込むスクリプトと GA の初期化のために必要。
+- ハニーポット: 本文の `hp_email` が空でなければ 400 を返す。

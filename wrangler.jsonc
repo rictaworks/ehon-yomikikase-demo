@@ -1,0 +1,31 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ehon-yomikikase-demo",
+  "main": "worker/src/index.ts",
+  "account_id": "9c5183bedab008ccef3581056752fa6f",
+  "compatibility_date": "2026-09-01",
+  // web/ の next build（output: "export"）の成果物を Workers Assets で配信する。
+  // /api/* だけ Worker（Hono）を先に実行し、それ以外は静的ファイルをそのまま返す。
+  "assets": {
+    "directory": "./web/out",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"],
+    "not_found_handling": "404-page"
+  },
+  // database_id は D1 データベース作成後に差し替える（プレースホルダのまま）。
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ehon_yomikikase_db",
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "migrations_dir": "migrations"
+    }
+  ],
+  // JST 03:00 = UTC 18:00（前日）の日次リセット。
+  "triggers": {
+    "crons": ["0 18 * * *"]
+  },
+  "observability": {
+    "enabled": true
+  }
+}

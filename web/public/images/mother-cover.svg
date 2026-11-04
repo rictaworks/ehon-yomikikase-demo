@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+  <rect width="300" height="400" fill="#FCE7F3"/>
+  <rect x="10" y="10" width="280" height="380" rx="16" fill="#FDF2F8" stroke="#EC4899" stroke-width="4"/>
+  <!-- sky -->
+  <rect x="10" y="10" width="280" height="200" rx="16" fill="#BFDBFE"/>
+  <!-- sun -->
+  <circle cx="240" cy="60" r="30" fill="#FDE68A"/>
+  <!-- grass -->
+  <rect x="10" y="195" width="280" height="195" rx="8" fill="#86EFAC"/>
+  <!-- mother silhouette -->
+  <circle cx="135" cy="145" r="30" fill="#F9A8D4"/>
+  <rect x="108" y="175" width="55" height="75" rx="10" fill="#F472B6"/>
+  <!-- child silhouette -->
+  <circle cx="195" cy="165" r="22" fill="#FDE68A"/>
+  <rect x="175" y="187" width="38" height="55" rx="8" fill="#60A5FA"/>
+  <!-- arms joining -->
+  <path d="M163 210 Q175 220 175 215" stroke="#F472B6" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <!-- hearts -->
+  <text x="158" y="145" font-size="24" text-anchor="middle" fill="#F43F5E">&#9825;</text>
+  <text x="175" y="135" font-size="16" text-anchor="middle" fill="#F43F5E">&#9825;</text>
+  <!-- title text -->
+  <text x="150" y="310" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="bold" fill="#9D174D">おかあさんと</text>
+  <text x="150" y="342" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="bold" fill="#9D174D">ぼく</text>
+</svg>
